@@ -22,28 +22,32 @@
     --lightbshadow: rgba(0,0,0,0.15);
   } */
 
-
+*{box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 body{
-  
+    font-family:"Poppins", sans-serif; ;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+height: 100vh;
+    background: rgba(0,0,0,.72);
     /* background: linear-gradient(var(--pink) 0%, var(--violet) 100%); */
 
-
+/* 
     animation: changeBg 5s infinite
     alternate linear;
 
  
-  
+   */
    
     
 
 }
 
 
-@keyframes changeBg{
+/* @keyframes changeBg{
     0%{
         background:  #6c072a;
     }
@@ -59,7 +63,7 @@ body{
     100%{
         background: #c42704c3;
     }
-} 
+}  */
 .container{
     border-radius: 20px;
     width: 380px;
@@ -87,8 +91,8 @@ body{
 }
 
 li.playing{
-    background-color: #0b5eb7;
-    color: #fff;
+    background-color: #fff;
+    color: #0b5eb7;
     cursor: pointer;
     font-weight:bolder ;
     box-shadow: 4px 4px 4px slateblue;
@@ -98,8 +102,9 @@ li.playing{
 
 
 li:hover{
-    background-color: aqua;
+    background-color: #c6ccd7;
     font-weight: bold;
+    color: #fff;
     
 }
 
@@ -119,13 +124,18 @@ li:hover{
     border-radius: 20px;
 }
 
+
 ul{
-    height: 100px;
+    height: 120px;
+    border-radius: 12px;
     overflow-y: scroll;
     cursor: pointer;
-   
 }
 
+
+
 li{
-    background: #515C6F;
+    background-color:#515C6F;
+    font-size: 12px;
+    transition: all 0.5s ease;
 }

@@ -13,6 +13,8 @@ const volume = document.querySelector("#volume");
 const volumeBar = document.querySelector("#volume-bar");
 const ul = document.querySelector("ul") 
 const musicSum = document.querySelector("#musicSum")
+const repeatMusic = document.querySelector("#repeat")
+const volumeHigh = document.querySelector("#volumeHigh")
 
 
 const player = new musıcPlayer(musıcList);
@@ -54,18 +56,20 @@ prev.addEventListener("click", () => {
 
 next.addEventListener("click", ()=>{
     nextMusic();
-    
+
     musicSayısıGöster(player.index+1,player.musıcList.length)
 })
 replay.addEventListener("click",()=>{
-    const isMixMusic= container.classList.contains("mix");
-    isMixMusic ? replayMusic() : mixMusic ();
-
-
-
+ replayMusic()
 
 musicSayısıGöster(player.index+1,player.musıcList.length)
 })
+
+repeatMusic.addEventListener("click",()=>{
+    mixMusic()
+    musicSayısıGöster(player.index+1,player.musıcList.length)
+})
+
 
 
 const pauseMusic = () =>{
@@ -87,47 +91,51 @@ const prevMusic = ()=>{
     displayMusic(musıc);
     playMusic();
     isPlayingNow();
-    mixMusic();
+    
     
 }
 
 const nextMusic = () =>{
     player.next();
-    let musa = player.getMusıc();
-    displayMusic(musa);
+    let selectedMusic = player.getMusıc();
+    displayMusic(selectedMusic);
     playMusic();
     isPlayingNow();
-    mixMusic()
- 
 }
 
 const replayMusic = () =>{
     container.classList.remove("mix")
-   
-    
- 
-    replay.querySelector("i").classList="fa-solid fa-reply"
     player.replay();
-    let musa = player.getMusıc();
-    displayMusic(musa);
+    let selectedMusic = player.getMusıc();
+    displayMusic(selectedMusic);
     playMusic();
     isPlayingNow();
-  
-
 }
+let ismixMusic = false;
 
 const mixMusic = () =>{
-    container.classList.add("mix");
     
-    replay.querySelector("i").classList="fa-solid fa-repeat"
         player.mixMusic();
         let rep = player.getMusıc();
         displayMusic(rep);
         playMusic();
         isPlayingNow();
-    
+
+        ismixMusic ? mixPause() : mixPlay();
+
     
 
+}
+const mixPause = () =>{
+    ismixMusic = false
+    repeatMusic.classList.remove("btn-dark")
+
+}
+const mixPlay = () =>{
+    ismixMusic = true
+   
+    repeatMusic.classList.add("btn-dark")
+    
 }
 
 const calculateTime = (toplamSaniye) => {
@@ -159,11 +167,18 @@ let sesDurumu = "sessli";
 
 volumeBar.addEventListener("input", (e) =>{
     const value = e.target.value;
+    
+        volumeHigh.textContent=value
+
+    
+    console.log(value)
    audio.volume=value/100;
+   console.log(audio.volume)
+
    if(value==0){
     audio.muted=true;
     sesDurumu="sessiz";
-    volume.classList="fa-solid fa-volume-xmark"
+    volume.classList=" fa-solid fa-volume-xmark"
    }else{
     audio.muted=false;
     sesDurumu="sessli";
@@ -171,17 +186,20 @@ volumeBar.addEventListener("input", (e) =>{
    }
 })
 
+
 volume.addEventListener("click", () =>{
     if(sesDurumu==="sessli"){
         audio.muted=true;
         sesDurumu="sessiz";
         volume.classList="fa-solid fa-volume-xmark"
       volumeBar.value=0;
+      volumeHigh.textContent=volumeBar.value
     }else{
         audio.muted=false;
         sesDurumu="sessli";
         volume.classList="fa-solid fa-volume-high";
         volumeBar.value=100;
+        volumeHigh.textContent=volumeBar.value
     }
 })
 
@@ -189,7 +207,8 @@ volume.addEventListener("click", () =>{
 const displayMusicList = (list) =>{
     for(let i=0; i<list.length; i++){
         let liTag=`
-        <li li-index='${i}' onclick="selectedMusic(this)" class="list-group-item d-flex justify-content-between align-items-center " >
+        <li li-index='${i}' onclick="selectedMusic(this)" class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #515C6F;" >
+        <img  src="ımg/${list[i].ımg}" style="width:30px; height:30px; border-radius:50%">
         <span >${list[i].getName()} </span>
         <span id="music-${i}" class="badge text-dark rounded-pill"></span>
         <audio class="music-${i}" src="mp3/${list[i].file}"></audio>
@@ -228,7 +247,7 @@ const displayMusicList = (list) =>{
    
  }
 
- const isPlayingNow= () =>{
+ const isPlayingNow = () =>{
     for(let li of ul.querySelectorAll("li")){
         if(li.classList.contains("playing")){
             li.classList.remove("playing")
@@ -241,7 +260,7 @@ const displayMusicList = (list) =>{
         }
     }
     audio.addEventListener("ended",() =>{
-     
+        
         mixMusic()
         musicSayısıGöster(player.index+1,player.musıcList.length)
      
@@ -250,7 +269,7 @@ const displayMusicList = (list) =>{
      
       const musicSayısıGöster = (musicSırası,toplamMusic) =>{
                   
-                   let sıra=`<span class='badge bg-light float-start mt-2 text-dark' style="border-radius:8px; ">${musicSırası}/${toplamMusic}</span>`;
+                   let sıra=`<span class='badge bg-primary float-end  text-light' style="border-radius:8px; ">${musicSırası} / ${toplamMusic}</span>`;
              musicSum.innerHTML = sıra
                  
          }

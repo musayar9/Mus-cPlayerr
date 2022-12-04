@@ -3,19 +3,18 @@ class musıcPlayer{
     this.musıcList=musıcList;
     this.index=0;
     }
-    
-
 
     getMusıc(){
-
         return this.musıcList[this.index]
     }
     next(){
-        if(this.index + 1 < this.musıcList.length){
+        if(this.index +1 < this.musıcList.length && ismixMusic === false){
             this.index++;
-            
-
-        }else{
+        }else if(this.index +1 < this.musıcList.length  && ismixMusic === true){
+            let random_index = Math.floor(Math.random() * this.musıcList.length + 1)
+            this.index = random_index;
+        } 
+        else{
             this.index=0
         }
     }
@@ -40,9 +39,6 @@ musicSayısıGöster(){
 }
 mixMusic(){
     this.index=Math.floor((Math.random()* musıcList.length + 1))
-
 }
-        
-
 }
 
